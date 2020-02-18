@@ -1279,10 +1279,10 @@ func TestAjaxForbiddendRequest(t *testing.T) {
 func TestClearSplitCookie(t *testing.T) {
 	opts := NewOptions()
 	opts.CookieName = "oauth2"
-	opts.CookieDomain = "abc"
+	opts.CookieDomains = []string{"abc"}
 	store, err := cookie.NewCookieSessionStore(&opts.SessionOptions, &opts.CookieOptions)
 	assert.Equal(t, err, nil)
-	p := OAuthProxy{CookieName: opts.CookieName, CookieDomain: opts.CookieDomain, sessionStore: store}
+	p := OAuthProxy{CookieName: opts.CookieName, CookieDomains: opts.CookieDomains, sessionStore: store}
 	var rw = httptest.NewRecorder()
 	req := httptest.NewRequest("get", "/", nil)
 
@@ -1308,10 +1308,10 @@ func TestClearSplitCookie(t *testing.T) {
 func TestClearSingleCookie(t *testing.T) {
 	opts := NewOptions()
 	opts.CookieName = "oauth2"
-	opts.CookieDomain = "abc"
+	opts.CookieDomains = []string{"abc"}
 	store, err := cookie.NewCookieSessionStore(&opts.SessionOptions, &opts.CookieOptions)
 	assert.Equal(t, err, nil)
-	p := OAuthProxy{CookieName: opts.CookieName, CookieDomain: opts.CookieDomain, sessionStore: store}
+	p := OAuthProxy{CookieName: opts.CookieName, CookieDomains: opts.CookieDomains, sessionStore: store}
 	var rw = httptest.NewRecorder()
 	req := httptest.NewRequest("get", "/", nil)
 
@@ -1439,7 +1439,7 @@ func TestJwtUnauthorizedOnGroupValidationFailure(t *testing.T) {
 }
 
 func TestFindJwtBearerToken(t *testing.T) {
-	p := OAuthProxy{CookieName: "oauth2", CookieDomain: "abc"}
+	p := OAuthProxy{CookieName: "oauth2", CookieDomains: []string{"abc"}}
 	getReq := &http.Request{URL: &url.URL{Scheme: "http", Host: "example.com"}}
 
 	validToken := "eyJfoobar.eyJfoobar.12345asdf"
